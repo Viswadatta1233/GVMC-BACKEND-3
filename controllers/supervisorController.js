@@ -37,26 +37,31 @@ exports.submitLocationData = async (req, res) => {
 
     // Data to send to ML model
     const mlInput = {
-      loc_id,
-      popDensity,
-      thresholdPercent,
-      eventWastePercent,
-      permanentSourcePercent,
-      currentPercentWaste,
-      lastReportedDate,
+      "location_id": loc_id,  // Send loc_id as string
+      "date": lastReportedDate,  // Send the string date as is to Flask
+      "population_density": popDensity,  // Send as number
+      "threshold_frequency_percent": thresholdPercent,  // Send as number
+      "expected_event_waste_percent": eventWastePercent,  // Send as number
+      "permanent_source_waste_percent": permanentSourcePercent,  // Send as number
+      "waste_already_present_percent": currentPercentWaste  // Send as number
     };
 
     // Make a request to the ML model
     const mlResponse = await axios.post('http://127.0.0.1:5000/predict', mlInput);
-    const { nextOverflowDate } = mlResponse.data;
+    const { nextOverflowDate } = mlResponse.data;  // This will be a string date
+
+    // Convert the string date to a JavaScript Date object before saving it to MongoDB
+    const nextOverflowDateObj = new Date(nextOverflowDate);  // Convert string to Date object
+    const lastReportedDateObj = new Date(lastReportedDate);  // Convert string to Date object
 
     // Store the result in the Output model
     const output = new Output({
       loc_id,
+      
       loc_name,
-      lastReportedDate,
+      lastReportedDate: lastReportedDateObj,  // Save as Date object
       currentPercentWaste,
-      nextOverflowDate,
+      nextOverflowDate: nextOverflowDateObj,  // Save as Date object
     });
     await output.save();
 

@@ -9,7 +9,7 @@ const requestSchema = new mongoose.Schema({
     enum: ['pending', 'accepted', 'denied'],
     default: 'pending',
   },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  createdBy: { type: String, required: true },  // Storing username as a string
 });
 
 const UserRequest = mongoose.model('UserRequest', requestSchema);

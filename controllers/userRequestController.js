@@ -6,7 +6,6 @@ const createUserRequest = async (req, res) => {
 
   if (!userLocation || !requestStatement || !requestDescription || !createdBy) {
     return res.status(400).json({ message: 'All fields are required.' });
-    console.log("hi")
   }
 
   try {
@@ -14,9 +13,9 @@ const createUserRequest = async (req, res) => {
       userLocation,
       requestStatement,
       requestDescription,
-      createdBy,
+      createdBy,  // Storing username here
     });
-    console.log("hi")
+
     res.status(201).json({ message: 'Request created successfully.', request: newRequest });
   } catch (error) {
     res.status(500).json({ message: 'Error creating request.', error });
@@ -40,7 +39,7 @@ const getRequestsByLocation = async (req, res) => {
         requestStatement: request.requestStatement,
         requestDescription: request.requestDescription,
         status: request.status,
-        createdBy: request.createdBy,
+        createdBy: request.createdBy,  // Now directly accessing the username
       }))
     );
   } catch (error) {
@@ -81,7 +80,7 @@ const getAcceptedRequestsForAdmin = async (req, res) => {
         requestStatement: request.requestStatement,
         requestDescription: request.requestDescription,
         status: request.status,
-        createdBy: request.createdBy,
+        createdBy: request.createdBy,  // Now directly accessing the username
       }))
     );
   } catch (error) {
