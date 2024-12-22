@@ -1,9 +1,10 @@
 const express = require('express');
-const { protectSupervisor, submitLocationData } = require('../controllers/supervisorController');
+// const {protect}=require('../middleware/authMiddleware')  // No protection middleware needed now
+const { submitLocationData } = require('../controllers/supervisorController');
 
 const router = express.Router();
 
-// Protected route for supervisor to submit location data
-router.post('/submit', protectSupervisor, submitLocationData);
+// Route to submit location data
+router.post('/submit', submitLocationData);
 
 module.exports = router;
